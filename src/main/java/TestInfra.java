@@ -52,37 +52,27 @@ public class TestInfra {
 
     public void checkIfAllResultsAreSorted(String asc, String locator) {
         List<WebElement> texts = waiterUtils.waitUntilAllWebElementVisible(locator, ConstUtils.TIME);
-        if (asc.equals(ConstUtils.ASC)){
-            if (checkIfResultsOfTestAreSortedFromAToZ(texts)) {
-                System.out.println(String.format("%s-%s", ConstUtils.LIST_ARE_NOT_SORTED_AS_IT_SHOULD, asc));
-            }
-        }else{
-            if (checkIfResultsOfTestAreSortedFromZToA(texts)) {
-                System.out.println(String.format("%s-%s", ConstUtils.LIST_ARE_NOT_SORTED_AS_IT_SHOULD, asc));
-            }
-        }
+        checkIfResultsOfTestAreSortedFromAToZOrZToA(texts,asc);
 
     }
 
-    private boolean checkIfResultsOfTestAreSortedFromAToZ(List<WebElement> texts) {
+    private boolean checkIfResultsOfTestAreSortedFromAToZOrZToA(List<WebElement> texts,String asc) {
         boolean notOkay = false;
         for (int i = 1; i < texts.size(); i++) {
-            if (texts.get(i - 1).getText().compareTo(texts.get(i).getText()) > 0) {
-                notOkay = true;
+            if(ConstUtils.ASC.equals(asc)){
+                if (texts.get(i - 1).getText().compareTo(texts.get(i).getText()) > 0) {
+                    notOkay = true;
+                }
+            }else{
+                if (texts.get(i - 1).getText().compareTo(texts.get(i).getText()) < 0) {
+                    notOkay = true;
+                }
             }
+
         }
         return notOkay;
     }
 
-    private boolean checkIfResultsOfTestAreSortedFromZToA(List<WebElement> texts) {
-        boolean notOkay = false;
-        for (int i = 1; i < texts.size(); i++) {
-            if (texts.get(i - 1).getText().compareTo(texts.get(i).getText()) < 0) {
-                notOkay = true;
-            }
-        }
-        return notOkay;
-    }
 
 
 }
